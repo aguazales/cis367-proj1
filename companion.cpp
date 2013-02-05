@@ -40,12 +40,16 @@ void		DisplayFunc(void)
 	glLoadIdentity();
 
 
+	glCallList(cube);
 
-
-	//glCallList(cube);
-	glCallList(heart);
-
-
+	// Place heart on the right face
+	glLoadIdentity();
+	glPushMatrix();
+		glTranslatef(2, -3, -40);
+		glRotatef(53, 0, 0, 1);
+		glRotatef(30, 1, 1, 0);
+		glCallList(heart);
+	glPopMatrix();
 
 
 	/* End */
@@ -86,6 +90,11 @@ void KeyboardFunc(unsigned char key, int x, int y)
 /* Initialize display lists for render function */
 void init()
 {
+
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+
 	cube = glGenLists(1);
 	heart = glGenLists(1);
 
@@ -110,8 +119,10 @@ void init()
 		glVertex3f(-5, -5,  5);
 		glVertex3f(-5,  5,  5);
 		glVertex3f(-5,  5, -5);
-
 		glColor3ub(143, 143, 143);
+
+		//glCallList(heart);
+
 		/* Right face */
 		glVertex3f( 5,  5, -5);
 		glVertex3f( 5,  5,  5);
@@ -154,22 +165,31 @@ void init()
 
 	/* Heart display list */
 	glNewList(heart, GL_COMPILE);
-		glPushMatrix();
-
-		glRotatef(45, 0, 0, 1);
-		glTranslatef(0, 0, -40);
-
 		glBegin(GL_QUADS);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glColor3ub(255, 153, 153);
 			glVertex3f(0, 0, 0);
-			glVertex3f(2, 0,  0);
-			glVertex3f(2,  2,  0);
-			glVertex3f(0,  2, 0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glVertex3f(2, 0, 0);
+			glVertex3f(2, 2, 0);
+			glVertex3f(0, 2, 0);
 			glColor3ub(153, 153, 153);
 		glEnd();
-		glPopMatrix();
+
+		// draw the tops of the heart
+		glBegin(GL_TRIANGLE_FAN);
+			glColor3ub(255, 153, 153);
+			glVertex3f(1, 2, 0);
+			glVertex3f(2, 2, 0);
+			glVertex3f(1.8, 2.2, 0);
+			glVertex3f(1.5, 2.5, 0);
+			glVertex3f(1.2, 2.8, 0);
+			glVertex3f(1, 3, 0);
+			glVertex3f(0.7, 2.7, 0);
+			glVertex3f(0.5, 2.5, 0);
+			glVertex3f(0.2, 2.2, 0);
+			glVertex3f(0, 2, 0);
+			glColor3ub(153, 153, 153);
+		glEnd();
+
 	glEndList();
 
 }
@@ -181,7 +201,7 @@ int		main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
-	glutCreateWindow("Companion Cube (eventually)");
+	glutCreateWindow("Companion Cube: CIS 367 Proj 1");
 
 	/* OpenGL settings */
 	glClearColor(0, 0, 0, 0);
@@ -190,9 +210,9 @@ int		main(int argc, char **argv)
 	init();
 
 	/* Declaration of the callbacks */
-	glutDisplayFunc(&DisplayFunc);
-	glutReshapeFunc(&ReshapeFunc);
-	glutKeyboardFunc(&KeyboardFunc);
+	glutDisplayFunc(DisplayFunc);
+	glutReshapeFunc(ReshapeFunc);
+	glutKeyboardFunc(KeyboardFunc);
 
 	/* Loop */
 	glutMainLoop();
