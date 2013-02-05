@@ -29,6 +29,7 @@ GLuint face;
 GLuint heart;
 GLuint corner;
 GLuint mid_bracket;
+GLuint radius;
 /*
  ** Function called to update rendering
  */
@@ -165,6 +166,7 @@ void init()
 
 	/* Heart display list */
 	glNewList(heart, GL_COMPILE);
+		// draw the square center of the heart
 		glBegin(GL_QUADS);
 			glColor3ub(255, 153, 153);
 			glVertex3f(0, 0, 0);
@@ -174,20 +176,39 @@ void init()
 			glColor3ub(153, 153, 153);
 		glEnd();
 
-		// draw the tops of the heart
+//		// draw the left top semi-circle of the heart
+//		glBegin(GL_TRIANGLE_FAN);
+//			glColor3ub(255, 153, 153);
+//			glLoadIdentity();
+//
+//				radius = 1;
+//
+//				for(int j = 0; j < 180; j++)
+//				{
+//					float theta = j * (M_PI/180.0f);
+//
+//					float x = (float)radius * cos(theta)+1;
+//					float y = (float)radius * sin(theta)+1.95;
+//					glVertex3f(x, y, 0);
+//				}
+//
+//		glEnd();
+
+		// draw the right top semi-circle of the heart
 		glBegin(GL_TRIANGLE_FAN);
 			glColor3ub(255, 153, 153);
-			glVertex3f(1, 2, 0);
-			glVertex3f(2, 2, 0);
-			glVertex3f(1.8, 2.2, 0);
-			glVertex3f(1.5, 2.5, 0);
-			glVertex3f(1.2, 2.8, 0);
-			glVertex3f(1, 3, 0);
-			glVertex3f(0.7, 2.7, 0);
-			glVertex3f(0.5, 2.5, 0);
-			glVertex3f(0.2, 2.2, 0);
-			glVertex3f(0, 2, 0);
-			glColor3ub(153, 153, 153);
+
+			radius = 1;
+
+			for(int j = 0; j < 180; j++)
+			{
+				float theta = j * (M_PI);
+
+				float x = (float)radius * cos(theta)+1;
+				float y = (float)radius * sin(theta)+1.95;
+				glVertex3f(x, y, 0);
+			}
+
 		glEnd();
 
 	glEndList();
