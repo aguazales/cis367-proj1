@@ -35,37 +35,55 @@ GLuint radius;
  */
 void		DisplayFunc(void)
 {
-
 	/* Clear the buffer, clear the matrix */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 
-	glCallList(cube);
-
-	// Place heart on the right face
-	glLoadIdentity();
 	glPushMatrix();
-		glTranslatef(2, -3, -40);
-		glRotatef(53, 0, 0, 1);
-		glRotatef(30, 1, 1, 0);
-		glCallList(heart);
+		/* Move the object backward 50 units from the camera
+		 * and rotate 30 degrees left on the x-axis and
+		 * 30 degrees down on the y-axis*/
+		glTranslatef(0, 0, -50);
+		glRotatef(30, 1, 0, 0);
+		glRotatef(30, 0, 1, 0);
+		glCallList(cube);
+
+		// Place heart on the right face
+		glPushMatrix();
+			glLoadIdentity();
+			glTranslatef(2, -3, -40);
+			glRotatef(52, 0, 0, 1);
+			glRotatef(-45, 1, 0, 0);
+			glCallList(heart);
+			glColor3ub(153, 153, 153);
+		glPopMatrix();
+
+		// Place heart on the left face
+		glPushMatrix();
+			glLoadIdentity();
+			glTranslatef(-3, -4, -40);
+			glRotatef(45, 0, 0, 1);
+			glRotatef(315, 1, 0, 0);
+			glCallList(heart);
+		glColor3ub(153, 153, 153);
+		glPopMatrix();
+
 	glPopMatrix();
+
+
 
 
 	/* End */
 	glFlush();
 	glutSwapBuffers();
-
-	/* Update again and again */
-	//glutPostRedisplay();
-}
+} // END DisplayFunc
 
 
 /*
  ** Function called when the window is created or resized
  */
-void		ReshapeFunc(int width, int height)
+void ReshapeFunc(int width, int height)
 {
 	glMatrixMode(GL_PROJECTION);
 
@@ -75,7 +93,7 @@ void		ReshapeFunc(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
-}
+} // END ReshapeFunc
 
 
 /*
@@ -85,14 +103,14 @@ void KeyboardFunc(unsigned char key, int x, int y)
 {
 	if ('q' == key || 'Q' == key || 27 == key)
 		exit(0);
-}
+} // END KeyboardFunc
 
 
 /* Initialize display lists for render function */
 void init()
 {
 
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_BACK);
 
@@ -102,13 +120,6 @@ void init()
 	/* Cube display list (bare surfaces, no details) */
 	glNewList(cube, GL_COMPILE);
 		glPushMatrix();
-
-		/* Move the object backward 50 units from the camera
-		 * and rotate 30 degrees left on the x-axis and
-		 * 30 degrees down on the y-axis*/
-		glTranslatef(0, 0, -50);
-		glRotatef(30, 1, 0, 0);
-		glRotatef(30, 0, 1, 0);
 
 		/* We tell we want to draw quads */
 		glBegin(GL_QUADS);
@@ -176,23 +187,22 @@ void init()
 			glColor3ub(153, 153, 153);
 		glEnd();
 
-//		// draw the left top semi-circle of the heart
-//		glBegin(GL_TRIANGLE_FAN);
-//			glColor3ub(255, 153, 153);
-//			glLoadIdentity();
-//
-//				radius = 1;
-//
-//				for(int j = 0; j < 180; j++)
-//				{
-//					float theta = j * (M_PI/180.0f);
-//
-//					float x = (float)radius * cos(theta)+1;
-//					float y = (float)radius * sin(theta)+1.95;
-//					glVertex3f(x, y, 0);
-//				}
-//
-//		glEnd();
+		// draw the left top semi-circle of the heart
+		glBegin(GL_TRIANGLE_FAN);
+			glColor3ub(255, 153, 153);
+			glLoadIdentity();
+
+				radius = 1;
+
+				for(int j = 0; j < 180; j++)
+				{
+					float theta = j * (M_PI/180.0f);
+
+					float x = (float)radius * cos(theta)+1;
+					float y = (float)radius * sin(theta)+1.95;
+					glVertex3f(x, y, 0);
+				}
+		glEnd();
 
 		// draw the right top semi-circle of the heart
 		glBegin(GL_TRIANGLE_FAN);
@@ -200,20 +210,19 @@ void init()
 
 			radius = 1;
 
-			for(int j = 0; j < 180; j++)
+			for(int j = 0; j < 360; j++)
 			{
-				float theta = j * (M_PI);
+				float theta = j * (M_PI/180.0f);
 
-				float x = (float)radius * cos(theta)+1;
-				float y = (float)radius * sin(theta)+1.95;
+				float x = (float)radius * cos(theta)+2;
+				float y = (float)radius * sin(theta)+1;
 				glVertex3f(x, y, 0);
 			}
-
 		glEnd();
 
 	glEndList();
 
-}
+} // END init
 
 
 int		main(int argc, char **argv)
@@ -240,6 +249,6 @@ int		main(int argc, char **argv)
 
 	/* Never reached */
 	return 0;
-}
+} // END main
 
 /* ========================================================================= */
