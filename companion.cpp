@@ -1,21 +1,13 @@
 /* ============================================================================
  **
- ** Demonstration of spinning cube
- ** Copyright (C) 2005  Julien Guertault
+ ** Author: Jacob Payne
+ ** Author: Shannon Jones
  **
- ** This program is free software; you can redistribute it and/or
- ** modify it under the terms of the GNU General Public License
- ** as published by the Free Software Foundation; either version 2
- ** of the License, or (at your option) any later version.
+ ** CIS 367 Project 1
+ ** Winter 2013
  **
- ** This program is distributed in the hope that it will be useful,
- ** but WITHOUT ANY WARRANTY; without even the implied warranty of
- ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- ** GNU General Public License for more details.
- **
- ** You should have received a copy of the GNU General Public License
- ** along with this program; if not, write to the Free Software
- ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ ** 3D drawing of the Weighted Companion Cube from
+ ** Valve's Portal video game series
  **
  ** ========================================================================= */
 
@@ -24,15 +16,16 @@
 #include	<math.h>
 
 /* Display lists for objects */
-GLuint cube;
-GLuint face1;
+GLuint face;
 GLuint heart;
 GLuint corner;
 GLuint mid_bracket;
 GLdouble radius;
-/*
- ** Function called to update rendering
- */
+
+
+/* =======================================
+ * Function called to update rendering
+ * ======================================= */
 void		DisplayFunc(void)
 {
 	/* Clear the buffer, clear the matrix */
@@ -43,15 +36,53 @@ void		DisplayFunc(void)
 	glPushMatrix();
 		glLoadIdentity();
 		glTranslatef(0, 0, -50);
-		glRotatef(0, 0, 1, 0);
-		glCallList(face1);
-		// Place heart on the left face
+//		glRotatef(30, 0, 1, 0);
+		glCallList(face);
+
+		// Place heart
 		glPushMatrix();
+			// move the heart out in front of the cube face and center it
 			glTranslatef(0, -1.5, 5.2);
 			glRotatef(45, 0, 0, 1);
 			glCallList(heart);
 			glColor3ub(153, 153, 153);
 		glPopMatrix();
+
+		// Bottom left corner
+		glPushMatrix();
+			// move the corner out in front of the cube face
+			glTranslatef(-5, -5, 5.2);
+			glCallList(corner);
+			glColor3ub(153, 153, 153);
+		glPopMatrix();
+
+		// Top left corner
+		glPushMatrix();
+			// move the corner out in front of the cube face
+			glTranslatef(-5, 5, 5.2);
+			glRotatef(270, 0, 0, 1);
+			glCallList(corner);
+			glColor3ub(153, 153, 153);
+		glPopMatrix();
+
+		// Bottom right corner
+		glPushMatrix();
+			// move the corner out in front of the cube face
+			glTranslatef(5, -5, 5.2);
+			glRotatef(90, 0, 0, 1);
+			glCallList(corner);
+			glColor3ub(153, 153, 153);
+		glPopMatrix();
+
+		// Top right corner
+		glPushMatrix();
+			// move the corner out in front of the cube face
+			glTranslatef(5, 5, 5.2);
+			glRotatef(180, 0, 0, 1);
+			glCallList(corner);
+			glColor3ub(153, 153, 153);
+		glPopMatrix();
+
 	glPopMatrix();
 
 	/* End */
@@ -60,9 +91,10 @@ void		DisplayFunc(void)
 } // END DisplayFunc
 
 
-/*
- ** Function called when the window is created or resized
- */
+
+/* =======================================
+ * Function called when the window is created or resized
+ * ======================================= */
 void ReshapeFunc(int width, int height)
 {
 	glMatrixMode(GL_PROJECTION);
@@ -76,9 +108,10 @@ void ReshapeFunc(int width, int height)
 } // END ReshapeFunc
 
 
-/*
- ** Function called when a key is hit
- */
+
+/* =======================================
+ * Function called when a key is hit
+ * ======================================= */
 void KeyboardFunc(unsigned char key, int x, int y)
 {
 	if ('q' == key || 'Q' == key || 27 == key)
@@ -86,19 +119,20 @@ void KeyboardFunc(unsigned char key, int x, int y)
 } // END KeyboardFunc
 
 
-/* Initialize display lists for render function */
+
+/* =======================================
+ * Initialize display lists for render function
+ * ======================================= */
 void init()
 {
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
-
-	cube = glGenLists(1);
 	heart = glGenLists(1);
-	face1 = glGenLists(1);
+	face = glGenLists(1);
+	corner = glGenLists(1);
 
-	glNewList(face1, GL_COMPILE);
+    // =======================================
+	/* Companion cube face display list */
+	glNewList(face, GL_COMPILE);
 		glBegin(GL_QUADS);
-			/* Left face */
 			glColor3ub(143, 143, 143);
 			glVertex3f(-5, -5,  5);
 			glVertex3f(-5,  5,  5);
@@ -108,55 +142,8 @@ void init()
 		glEnd();
 	glEndList();
 
-	/* Cube display list (bare surfaces, no details) */
-	glNewList(cube, GL_COMPILE);
-		glPushMatrix();
 
-		/* We tell we want to draw quads */
-		glBegin(GL_QUADS);
-
-		//glCallList(heart);
-
-		/* Right face */
-		glVertex3f( 5,  5, -5);
-		glVertex3f( 5,  5,  5);
-		glVertex3f( 5, -5,  5);
-		glVertex3f( 5, -5, -5);
-		glColor3ub(153, 153, 153);
-
-		/* Bottom face */
-		glVertex3f(-5, -5, -5);
-		glVertex3f(-5, -5,  5);
-		glVertex3f( 5, -5,  5);
-		glVertex3f( 5, -5, -5);
-		glColor3ub(160, 160, 160);
-
-		/* Top face */
-		glVertex3f(-5,  5, -5);
-		glVertex3f(-5,  5,  5);
-		glVertex3f( 5,  5,  5);
-		glVertex3f( 5,  5, -5);
-		glColor3ub(148, 148, 148);
-
-		/* Back face */
-		glVertex3f(-5, -5, -5);
-		glVertex3f(-5,  5, -5);
-		glVertex3f( 5,  5, -5);
-		glVertex3f( 5, -5, -5);
-		glColor3ub(150, 150, 150);
-
-		/* Front face */
-		glVertex3f(-5, -5,  5);
-		glVertex3f(-5,  5,  5);
-		glVertex3f( 5,  5,  5);
-		glVertex3f( 5, -5,  5);
-		glColor3ub(140, 140, 140);
-
-		glEnd();
-		glPopMatrix();
-	glEndList();
-
-
+     // =======================================
 	/* Heart display list */
 	glNewList(heart, GL_COMPILE);
 		// draw the square center of the heart
@@ -175,6 +162,8 @@ void init()
 
 				radius = 1;
 
+				// draw a whole circle and only the top edge
+				// will show over the top of the box
 				for(int j = 0; j < 360; j++)
 				{
 					float theta = j * (M_PI/180.0f);
@@ -185,7 +174,8 @@ void init()
 				}
 		glEnd();
 
-		// draw the right top semi-circle of the heart
+		// draw a whole circle and only the top edge
+		// will show over the top of the box
 		glBegin(GL_TRIANGLE_FAN);
 			glColor3ub(255, 153, 153);
 
@@ -203,8 +193,114 @@ void init()
 
 	glEndList();
 
+
+	// =======================================
+	// corner piece for companion cube
+	glNewList(corner, GL_COMPILE);
+
+		/* front face */
+		glBegin(GL_QUAD_STRIP);
+			glColor3ub(204, 204, 204);
+			glVertex3f(3, 1, 1);
+			glVertex3f(3, 0, 1);
+			glVertex3f(1, 1, 1);
+			glVertex3f(0, 0, 1);
+			glVertex3f(1, 3, 1);
+			glVertex3f(0, 3, 1);
+		glEnd();
+
+		/* back face */
+		glBegin(GL_QUAD_STRIP);
+			glColor3ub(210, 210, 210);
+			glVertex3f(3, 1, 0);
+			glVertex3f(3, 0, 0);
+			glVertex3f(1, 1, 0);
+			glVertex3f(0, 0, 0);
+			glVertex3f(1, 3, 0);
+			glVertex3f(0, 3, 0);
+		glEnd();
+
+		/* top face */
+		glBegin(GL_QUAD_STRIP);
+			glColor3ub(198, 198, 198);
+			glVertex3f(3, 1, 0);
+			glVertex3f(3, 1, 1);
+			glVertex3f(1, 1, 0);
+			glVertex3f(1, 1, 1);
+			glVertex3f(1, 3, 0);
+			glVertex3f(1, 3, 1);
+			glVertex3f(0, 3, 0);
+			glVertex3f(0, 3, 1);
+		glEnd();
+
+		/* bottom face */
+		glBegin(GL_QUAD_STRIP);
+			glColor3ub(214, 214, 214);
+			glVertex3f(3, 1, 0);
+			glVertex3f(3, 1, 1);
+			glVertex3f(3, 0, 0);
+			glVertex3f(3, 0, 1);
+			glVertex3f(0, 0, 0);
+			glVertex3f(0, 0, 1);
+			glVertex3f(0, 3, 0);
+			glVertex3f(0, 3, 1);
+		glEnd();
+
+		/* triangle fans front face */
+		glBegin(GL_TRIANGLE_FAN);
+			glColor3ub(204, 204, 204);
+			glVertex3f(1, 1, 1);
+			glVertex3f(3, 1, 1);
+			glVertex3f(2.75, 1.75, 1);
+			glVertex3f(2, 2, 1);
+			glVertex3f(1.75, 2.75, 1);
+			glVertex3f(1, 3, 1);
+		glEnd();
+
+//
+//		/* triangle fans back face lower left */
+//		glBegin(GL_TRIANGLE_FAN);
+//			glColor3ub(210, 210, 210);
+//			glVertex3f(1, 1, 0);
+//			glVertex3f(1, 3, 0);
+//			glVertex3f(1.75, 2.75, 0);
+//			glVertex3f(2, 2, 0);
+//			glVertex3f(2.75, 1.75, 0);
+//			glVertex3f(3, 1, 0);
+//		glEnd();
+//
+//		/* triangle fans top face lower left */
+//		glBegin(GL_QUADS);
+//			glColor3ub(215, 215, 215);
+//			glVertex3f(3, 1, 1);
+//			glVertex3f(3, 1, 0);
+//			glVertex3f(2.75, 1.75, 1);
+//			glVertex3f(2.75, 1.75, 0);
+//
+//			glVertex3f(2.75, 1.75, 1);
+//			glVertex3f(2.75, 1.75, 0);
+//			glVertex3f(2, 2, 1);
+//			glVertex3f(2, 2, 0);
+//
+//			glVertex3f(2, 2, 1);
+//			glVertex3f(2, 2, 0);
+//			glVertex3f(1.75, 2.75, 1);
+//			glVertex3f(1.75, 2.75, 0);
+//
+//			glVertex3f(1.75, 2.75, 1);
+//			glVertex3f(1.75, 2.75, 0);
+//			glVertex3f(1, 3, 1);
+//			glVertex3f(1, 3, 0);
+//		glEnd();
+	glEndList();
+
 } // END init
 
+
+
+/* =======================================
+ * Main function
+ * ======================================= */
 
 int		main(int argc, char **argv)
 {
