@@ -33,7 +33,6 @@ void DisplayFunc(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	//gl
 	// ********************************************
 	// draw the left face and all included objects
 	glPushMatrix();
@@ -758,8 +757,32 @@ void ReshapeFunc(int width, int height)
  * ======================================= */
 void KeyboardFunc(unsigned char key, int x, int y)
 {
+	// exit if user presses Q or escape
 	if ('q' == key || 'Q' == key || 27 == key)
 		exit(0);
+
+	glMatrixMode(GL_PROJECTION);
+	// if user presses WASD, switch camera views
+	// appropriately
+	if ('w' == key || 'W' == key)
+	{
+		gluLookAt(0, 0.45, 3.30, 0, 0, 0, 0, 1, 0);
+	}
+	if ('a' == key || 'A' == key)
+	{
+		gluLookAt(0, 0, -1, 0, 0, 0, 0, 1, 0);
+	}
+	if ('s' == key || 'S' == key)
+	{
+		gluLookAt(0, 0.45, 3.30, 0, 0, 0, 0, 1, 0);
+	}
+	if ('d' == key || 'D' == key)
+	{
+		gluLookAt(0, 0, 0, 0, 0, 0, 0, 1, 0);
+	}
+
+	glMatrixMode(GL_MODELVIEW);
+	glutPostRedisplay();
 } // END KeyboardFunc
 
 
