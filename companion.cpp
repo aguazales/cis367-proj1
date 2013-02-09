@@ -246,7 +246,7 @@ void init()
 			glVertex3f(0, 3, 1);
 		glEnd();
 
-		/* triangle fans front face */
+		/* triangle fans face */
 		glBegin(GL_TRIANGLE_FAN);
 			glColor3ub(204, 204, 204);
 			glVertex3f(1, 1, 1);
@@ -257,41 +257,16 @@ void init()
 			glVertex3f(1, 3, 1);
 		glEnd();
 
-//
-//		/* triangle fans back face lower left */
-//		glBegin(GL_TRIANGLE_FAN);
-//			glColor3ub(210, 210, 210);
-//			glVertex3f(1, 1, 0);
-//			glVertex3f(1, 3, 0);
-//			glVertex3f(1.75, 2.75, 0);
-//			glVertex3f(2, 2, 0);
-//			glVertex3f(2.75, 1.75, 0);
-//			glVertex3f(3, 1, 0);
-//		glEnd();
-//
-//		/* triangle fans top face lower left */
-//		glBegin(GL_QUADS);
-//			glColor3ub(215, 215, 215);
-//			glVertex3f(3, 1, 1);
-//			glVertex3f(3, 1, 0);
-//			glVertex3f(2.75, 1.75, 1);
-//			glVertex3f(2.75, 1.75, 0);
-//
-//			glVertex3f(2.75, 1.75, 1);
-//			glVertex3f(2.75, 1.75, 0);
-//			glVertex3f(2, 2, 1);
-//			glVertex3f(2, 2, 0);
-//
-//			glVertex3f(2, 2, 1);
-//			glVertex3f(2, 2, 0);
-//			glVertex3f(1.75, 2.75, 1);
-//			glVertex3f(1.75, 2.75, 0);
-//
-//			glVertex3f(1.75, 2.75, 1);
-//			glVertex3f(1.75, 2.75, 0);
-//			glVertex3f(1, 3, 1);
-//			glVertex3f(1, 3, 0);
-//		glEnd();
+		/* Quads */
+		glBegin(GL_QUAD_STRIP);
+			glColor3ub(214, 214, 214);
+			glVertex3f(1, 1, 1);
+			glVertex3f(3, 1, 1);
+			glVertex3f(2.75, 1.75, 1);
+			glVertex3f(2, 2, 1);
+			glVertex3f(1.75, 2.75, 1);
+			glVertex3f(1, 3, 1);
+		glEnd();
 	glEndList();
 
 } // END init
