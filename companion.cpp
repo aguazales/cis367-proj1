@@ -24,40 +24,6 @@ GLuint middle;
 GLuint line;
 GLdouble radius;
 
-/* Used to control camera position */
-// angle of rotation for the camera direction
-float angle = 0.0f;
-// actual vector representing the camera's direction
-float lx=0.0f,lz=-1.0f;
-// XZ position of the camera
-float x=0.0f, z=5.0f;
-// the key states. These variables will be zero
-//when no key is being presses
-float deltaAngle = 0.0f;
-float deltaMove = 0;
-
-
-/* =======================================
- * Computes the position of the camera in space
- * ======================================= */
-void computePos(float deltaMove)
-{
-	x += deltaMove * lx * 0.1f;
-	z += deltaMove * lz * 0.1f;
-}
-
-
-
-/* =======================================
- * Computes the camera angle in space
- * ======================================= */
-void computeDir(float deltaAngle)
-{
-	angle += deltaAngle;
-	lx = sin(angle);
-	lz = -cos(angle);
-}
-
 
 
 /* =======================================
@@ -65,29 +31,19 @@ void computeDir(float deltaAngle)
  * ======================================= */
 void DisplayFunc(void)
 {
-//	if (deltaMove)
-//			computePos(deltaMove);
-//	if (deltaAngle)
-//		computeDir(deltaAngle);
-
 	/* Clear the buffer, clear the matrix */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Reset transformations
 	glLoadIdentity();
 
-//	// Set the camera
-//	gluLookAt(	x, 1.0f, z,
-//			x+lx, 1.0f,  z+lz,
-//			0.0f, 1.0f,  0.0f);
-
-
-//	gluLookAt(0, 0, 0, 0, 1, 0, 0, 1, 0);
+	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 
 	glPushMatrix();
 		glTranslatef(0, 0, -50);
 		glRotatef(30, 0, 1, 0);
 		glRotatef(30, 1, 0, 0);
+		glScalef(2, 2, 2);
 		glCallList(cube);
 	glPopMatrix();
 
@@ -104,16 +60,10 @@ void DisplayFunc(void)
 void ReshapeFunc(int width, int height)
 {
 	glMatrixMode(GL_PROJECTION);
-
 	glLoadIdentity();
 	gluPerspective(45, width / (float) height, 0.1, 100);
 	glViewport(0, 0, width, height);
-
 	glMatrixMode(GL_MODELVIEW);
-
-	glLoadIdentity();
-
-	gluLookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
 	glutPostRedisplay();
 } // END ReshapeFunc
 
@@ -514,70 +464,113 @@ void init()
 
 
 /* =======================================
- * Function called when normal keys are hit
+ * Handles keypresses to enable/disable
+ * wireframe mode andswitch between camera views
  * ======================================= */
 void processNormalKeys(unsigned char key, int xx, int yy) {
 
-	if (key == 27)
+	// if either 'esc' or 'q' are pressed, quit the program
+	if (key == 27 || key == 'q')
 		exit(0);
 
+	// if 'w' is pressed, render every polygon with
+	// GL_LINE rather than the normal GL_FILL
+	//(approximating wireframe mode)
 	if (key == 'w' || key == 'W')
 	{
 		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 		glLineWidth(1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glCallList(cube);
+		glPushMatrix();
+			glTranslatef(0, 0, -50);
+			glRotatef(30, 0, 1, 0);
+			glRotatef(30, 1, 0, 0);
+			glScalef(2, 2, 2);
+			glCallList(cube);
+		glPopMatrix();
 		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		glutSwapBuffers();
 	}
 
+	// if 'f' is pressed, re-render the cube with PolygonMode
+	// set to GL_FILL (reverse the wireframe mode set with 'w')
 	if (key == 'f' || key == 'F')
 	{
 		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		glLineWidth(1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glCallList(cube);
+		glPushMatrix();
+			glTranslatef(0, 0, -50);
+			glRotatef(30, 0, 1, 0);
+			glRotatef(30, 1, 0, 0);
+			glScalef(2, 2, 2);
+			glCallList(cube);
+		glPopMatrix();
+		glutSwapBuffers();
+	}
+
+	// if '1' is pressed, render camera position 1 (default)
+	if (key == '1')
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glPushMatrix();
+			glTranslatef(0, 0, -50);
+			glRotatef(30, 0, 1, 0);
+			glRotatef(30, 1, 0, 0);
+			glScalef(2, 2, 2);
+			glCallList(cube);
+		glPopMatrix();
+		glutSwapBuffers();
+	}
+
+	// if '2' is pressed, render camera position 2
+	if (key == '2')
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glPushMatrix();
+			glTranslatef(0, 0, -40);
+			glRotatef(-30, 0, 1, 0);
+			glRotatef(45, 1, 0, 0);
+			glScalef(1, 1, 1);
+			glCallList(cube);
+		glPopMatrix();
+		glutSwapBuffers();
+	}
+
+	// if '3' is pressed, render camera position 3
+	if (key == '3')
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glPushMatrix();
+			glTranslatef(0, 0, -45);
+			glRotatef(-30, 0, 1, 0);
+			glRotatef(30, 0, 0, 1);
+			glScalef(2, 2, 2);
+			glCallList(cube);
+		glPopMatrix();
+		glutSwapBuffers();
+	}
+
+	// if '4' is pressed, render camera position 4
+	if (key == '4')
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glPushMatrix();
+			glTranslatef(0, 0, -50);
+			glRotatef(30, 0, 1, 0);
+			glRotatef(145, 0, 0, 1);
+			glScalef(2, 2, 2);
+			glCallList(cube);
+		glPopMatrix();
 		glutSwapBuffers();
 	}
 }
-
-
-
-/* =======================================
- * Function called when a key is pressed down
- * ======================================= */
-void pressKey(int key, int xx, int yy)
-{
-	switch (key) {
-		case GLUT_KEY_LEFT : deltaAngle = -0.01f; break;
-		case GLUT_KEY_RIGHT : deltaAngle = 0.01f; break;
-		case GLUT_KEY_UP : deltaMove = 0.5f; break;
-		case GLUT_KEY_DOWN : deltaMove = -0.5f; break;
-	}
-}
-
-
-
-/* =======================================
- * Function called when a key is released
- * ======================================= */
-void releaseKey(int key, int x, int y) {
-
-	switch (key) {
-		case GLUT_KEY_LEFT :
-		case GLUT_KEY_RIGHT : deltaAngle = 0.0f;break;
-		case GLUT_KEY_UP :
-		case GLUT_KEY_DOWN : deltaMove = 0;break;
-	}
-}
-
 
 
 
 /* =======================================
  * Main function
  * ======================================= */
-
 int	main(int argc, char **argv)
 {
 	/* Creation of the window */
@@ -598,9 +591,7 @@ int	main(int argc, char **argv)
 
 	// handle key presses
 	glutKeyboardFunc(processNormalKeys);
-	glutSpecialFunc(pressKey);
 	glutIgnoreKeyRepeat(1);
-	glutSpecialUpFunc(releaseKey);
 
 	/* Loop */
 	glutMainLoop();
