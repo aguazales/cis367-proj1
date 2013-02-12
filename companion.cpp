@@ -132,18 +132,74 @@ void init()
 	line = glGenLists(1);
 
 	glNewList(cube, GL_COMPILE);
-	// ********************************************
+		// ********************************************
 		// draw the left face and all included objects
 		glPushMatrix();
 			glRotatef(-90, 0, 1, 0);
 			glCallList(face);
+		glPopMatrix(); // end of left face display lists
 
+
+		// **********************************************
+		// draw the right face and all included objects
+		glPushMatrix();
+			glRotatef(90, 0, 1, 0);
+			glCallList(face);
+		glPopMatrix(); // end of right face display lists
+
+
+		// *******************************************
+		// draw the top face and all included objects
+		glPushMatrix();
+			glRotatef(-90, 1, 0, 0);
+			glCallList(face);
+		glPopMatrix(); // end of top face display lists
+
+
+		// *******************************************
+		// draw the back face and all included objects
+		glPushMatrix();
+			glRotatef(180, 1, 0, 0);
+			glCallList(face);
+		glPopMatrix(); // end of back face display lists
+
+
+		// *******************************************
+		// draw the bottom face and all included objects
+		glPushMatrix();
+			glRotatef(90, 1, 0, 0);
+			glCallList(face);
+		glPopMatrix(); // end of bottom face display lists
+
+		// *******************************************
+		// Draw the front face (no transformations needed)
+		glCallList(face);
+
+	glEndList(); // end of cube display list
+
+
+    // =======================================
+	/* Companion cube face display list */
+	glNewList(face, GL_COMPILE);
+		glBegin(GL_QUADS);
+			glColor3ub(143, 143, 143);
+			glVertex3f(-5, -5,  5);
+			glVertex3f(-5,  5,  5);
+			glVertex3f( 5,  5,  5);
+			glVertex3f( 5, -5,  5);
+			glColor3ub(143, 143, 143);
+		glEnd();
+
+		// *******************************************
+		// draw the front face and all included objects
+		glPushMatrix();
 			// Place heart
 			glPushMatrix();
 				// move the heart out in front of the cube face and center it
 				glTranslatef(0, -1.5, 5.2);
 				glRotatef(45, 0, 0, 1);
 				glCallList(heart);
+				glColor3ub(153, 153, 153);
 			glPopMatrix();
 
 			// Bottom left corner
@@ -151,6 +207,7 @@ void init()
 				// move the corner out in front of the cube face
 				glTranslatef(-5, -5, 5.2);
 				glCallList(corner);
+				glColor3ub(153, 153, 153);
 			glPopMatrix();
 
 			// Top left corner
@@ -159,6 +216,7 @@ void init()
 				glTranslatef(-5, 5, 5.2);
 				glRotatef(270, 0, 0, 1);
 				glCallList(corner);
+				glColor3ub(153, 153, 153);
 			glPopMatrix();
 
 			// Bottom right corner
@@ -167,6 +225,7 @@ void init()
 				glTranslatef(5, -5, 5.2);
 				glRotatef(90, 0, 0, 1);
 				glCallList(corner);
+				glColor3ub(153, 153, 153);
 			glPopMatrix();
 
 			// Top right corner
@@ -175,6 +234,7 @@ void init()
 				glTranslatef(5, 5, 5.2);
 				glRotatef(180, 0, 0, 1);
 				glCallList(corner);
+				glColor3ub(153, 153, 153);
 			glPopMatrix();
 
 			// top tiny middle cube
@@ -243,621 +303,7 @@ void init()
 				glLineWidth(1);
 			glPopMatrix();
 
-		glPopMatrix(); // end of left face display lists
-
-
-
-		// **********************************************
-		// draw the right face and all included objects
-			glPushMatrix();
-				//glLoadIdentity();
-				glRotatef(90, 0, 1, 0);
-				glCallList(face);
-
-				// Place heart
-				glPushMatrix();
-					// move the heart out in front of the cube face and center it
-					glTranslatef(0, -1.5, 5.2);
-					glRotatef(45, 0, 0, 1);
-					glCallList(heart);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, -5, 5.2);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, 5, 5.2);
-					glRotatef(270, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, -5, 5.2);
-					glRotatef(90, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, 5, 5.2);
-					glRotatef(180, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// top tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, 4, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// bottom tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, -5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// left tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-5, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// right tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(4, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// horizontal line to the right of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line on top of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// horizontal line to the left of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(-5, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line underneath the heart
-				glPushMatrix();
-				glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(-90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-			glPopMatrix(); // end of right face display lists
-
-
-			// *******************************************
-			// draw the top face and all included objects
-			glPushMatrix();
-				//glLoadIdentity();
-				glRotatef(-90, 1, 0, 0);
-				glCallList(face);
-
-				// Place heart
-				glPushMatrix();
-					// move the heart out in front of the cube face and center it
-					glTranslatef(0, -1.5, 5.2);
-					glRotatef(45, 0, 0, 1);
-					glCallList(heart);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, -5, 5.2);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, 5, 5.2);
-					glRotatef(270, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, -5, 5.2);
-					glRotatef(90, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, 5, 5.2);
-					glRotatef(180, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// top tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, 4, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// bottom tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, -5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// left tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-5, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// right tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(4, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// horizontal line to the right of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line on top of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// horizontal line to the left of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(-5, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line underneath the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(-90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-			glPopMatrix(); // end of top face display lists
-
-
-			// *******************************************
-			// draw the back face and all included objects
-			glPushMatrix();
-				//glLoadIdentity();
-
-				glRotatef(180, 1, 0, 0);
-				glCallList(face);
-
-				// Place heart
-				glPushMatrix();
-					// move the heart out in front of the cube face and center it
-					glTranslatef(0, -1.5, 5.2);
-					glRotatef(45, 0, 0, 1);
-					glCallList(heart);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, -5, 5.2);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, 5, 5.2);
-					glRotatef(270, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, -5, 5.2);
-					glRotatef(90, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, 5, 5.2);
-					glRotatef(180, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// top tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, 4, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// bottom tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, -5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// left tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-5, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// right tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(4, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// horizontal line to the right of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line on top of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// horizontal line to the left of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(-5, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line underneath the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(-90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-			glPopMatrix(); // end of back face display lists
-
-
-			// *******************************************
-			// draw the bottom face and all included objects
-			glPushMatrix();
-				//glLoadIdentity();
-
-				glRotatef(90, 1, 0, 0);
-				glCallList(face);
-
-				// Place heart
-				glPushMatrix();
-					// move the heart out in front of the cube face and center it
-					glTranslatef(0, -1.5, 5.2);
-					glRotatef(45, 0, 0, 1);
-					glCallList(heart);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, -5, 5.2);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, 5, 5.2);
-					glRotatef(270, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, -5, 5.2);
-					glRotatef(90, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, 5, 5.2);
-					glRotatef(180, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// top tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, 4, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// bottom tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, -5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// left tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-5, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// right tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(4, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// horizontal line to the right of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line on top of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// horizontal line to the left of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(-5, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line underneath the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(-90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-			glPopMatrix(); // end of bottom face display lists
-
-
-			// *******************************************
-			// draw the front face and all included objects
-			glPushMatrix();
-				//glLoadIdentity();
-
-				glCallList(face);
-
-				// Place heart
-				glPushMatrix();
-					// move the heart out in front of the cube face and center it
-					glTranslatef(0, -1.5, 5.2);
-					glRotatef(45, 0, 0, 1);
-					glCallList(heart);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, -5, 5.2);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top left corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(-5, 5, 5.2);
-					glRotatef(270, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Bottom right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, -5, 5.2);
-					glRotatef(90, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// Top right corner
-				glPushMatrix();
-					// move the corner out in front of the cube face
-					glTranslatef(5, 5, 5.2);
-					glRotatef(180, 0, 0, 1);
-					glCallList(corner);
-					glColor3ub(153, 153, 153);
-				glPopMatrix();
-
-				// top tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, 4, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// bottom tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-0.5, -5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// left tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(-5, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// right tiny middle cube
-				glPushMatrix();
-					// move the tiny middle cube out in front of the cube face
-					glTranslatef(4, -0.5, 5.2);
-					glCallList(middle);
-				glPopMatrix();
-
-				// horizontal line to the right of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line on top of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// horizontal line to the left of the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(-5, 0, 5.1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-
-				// vertical line underneath the heart
-				glPushMatrix();
-					glLineWidth(5);
-					// move the line out in front of the cube face
-					glTranslatef(0, 0, 5.1);
-					glRotatef(-90, 0, 0, 1);
-					glCallList(line);
-					glLineWidth(1);
-				glPopMatrix();
-	glEndList(); // end of cube display list
-
-    // =======================================
-	/* Companion cube face display list */
-	glNewList(face, GL_COMPILE);
-		glBegin(GL_QUADS);
-			glColor3ub(143, 143, 143);
-			glVertex3f(-5, -5,  5);
-			glVertex3f(-5,  5,  5);
-			glVertex3f( 5,  5,  5);
-			glVertex3f( 5, -5,  5);
-			glColor3ub(143, 143, 143);
-		glEnd();
+		glPopMatrix(); // end face
 	glEndList();
 
 
@@ -989,7 +435,7 @@ void init()
 			glVertex3f(1, 3, 0);
 			glVertex3f(1, 3, 1);
 		glEnd();
-	glEndList(); // end of corner piecedisplay list
+	glEndList(); // end of corner piece display list
 
 
 	// =======================================
@@ -1053,7 +499,8 @@ void init()
 
 
 	// =======================================
-	// line used to form cross across center of each cube face
+	// line used to form cross across center
+	// of each cube face
 	glNewList(line, GL_COMPILE);
 		glBegin(GL_LINES);
 			glColor3ub(255, 135, 250);
